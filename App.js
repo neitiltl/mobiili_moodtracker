@@ -1,12 +1,24 @@
-import { PaperProvider } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MoodTracker from './MoodTracker';
+import ShowMoods from './ShowMoods';
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <PaperProvider>
-      <MoodTracker />
-    </PaperProvider>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+
+          <Stack.Screen name="MoodTracker" component={MoodTracker} />
+          <Stack.Screen name="ShowMoods" component={ShowMoods} />
+
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+
 
   );
 }
