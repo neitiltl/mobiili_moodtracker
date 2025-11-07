@@ -20,7 +20,7 @@ export default function MoodTracker({ navigation }) {
 
         const newMood = { moodType, description };
         setMoods([...moods, newMood]);
-        Alert.alert(`Tallennettu: ${moodType}: ${description}`);
+        /*  Alert.alert(`Tallennettu: ${moodType}: ${description}`); */
         setDescription(""); //tyhjentää kentän
         setMoodType(""); //tyhjentää button-valinnan
     };
@@ -33,15 +33,15 @@ export default function MoodTracker({ navigation }) {
     return (
 
         <View style={styles.container}>
+
             <View style={{
                 flex: 1, flexDirection: 'column',
                 alignItems: 'center', justifyContent: 'space-around'
             }}>
+                <Text>{moodType || "Tee valinta"}</Text>
                 <Button title="Ylivireys" onPress={() => handleMoodButton("Ylivireys")} />
                 <Button title="Optimi" onPress={() => handleMoodButton("Optimi")} />
                 <Button title="Alivireys" onPress={() => handleMoodButton("Alivireys")} />
-                <Text>{moodType || "Tee valinta"}</Text>
-
             </View>
 
             <View style={{
@@ -57,12 +57,19 @@ export default function MoodTracker({ navigation }) {
 
             </View>
 
-            <FlatList
-                data={moods}
-                renderItem={({ item }) => <Text>{item.moodType}: {item.description}</Text>}
-            />
+            <View style={{
+                flex: 1, flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'space-around'
+            }}>
+                <FlatList
+                    data={moods}
+                    renderItem={({ item }) => <Text>{item.moodType}: {item.description}</Text>}
+                />
+                <Button title="Näytä kirjaukset" onPress={() => navigation.navigate('ShowMoods', { moods })} />
+            </View>
 
-            <Button title="Näytä kirjaukset" onPress={() => navigation.navigate('ShowMoods', { moods })} />
+
+
 
         </View>
     );
