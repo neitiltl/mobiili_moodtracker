@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { StyleSheet, View, FlatList, Alert, TextInput } from 'react-native';
 import { Button, Text, Card, Modal, Portal, PaperProvider } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { DatePickerInput } from 'react-native-paper-dates';
+import * as SQLite from 'expo-sqlite';
+
 
 export default function ShowMoods({ route, navigation }) {
 
@@ -14,9 +17,9 @@ export default function ShowMoods({ route, navigation }) {
     const containerStyle = { backgroundColor: 'white', padding: 20 };
 
     const testiMoods = [
-        { moodType: "Optimi", description: "Tämä on testidataa" },
-        { moodType: "Ylivireys", description: "Tässä on toisenlainen testidata jonka teksti on todella paljon pidempi" },
-        { moodType: "Alivireys", description: "Kolmas testidataa" }]; // TESTIDATA
+        { moodType: "Optimi", description: "Tämä on testidataa", inputDate: "2000-02-01T22:00:00.000Z" },
+        { moodType: "Ylivireys", description: "Tässä on toisenlainen testidata jonka teksti on todella paljon pidempi", inputDate: "2000-02-01T22:00:00.000Z" },
+        { moodType: "Alivireys", description: "Kolmas testidataa", inputDate: "2000-02-01T22:00:00.000Z" }]; // TESTIDATA
 
 
     let shownMoods;
@@ -55,12 +58,14 @@ export default function ShowMoods({ route, navigation }) {
                                             ItemSeparatorComponent={<View style={{ height: 2, backgroundColor: 'lightgray', marginVertical: 3 }}></View>}
 
                                             data={shownMoods} // KORJAA moods
-                                            renderItem={({ item }) => (
-                                                <View >
-                                                    <Text variant="bodyMedium" style={{fontWeight: 'bold'}}>{item.moodType}: </Text>
-                                                    <Text variant="bodyMedium">{item.description}</Text>
-                                                </View>)}
-
+                                            renderItem={({ item }) => {
+                                                const formattedDate = new Date(item.inputDate).toLocaleDateString('fi-FI');
+                                                return (
+                                                    (< View >
+                                                        <Text variant="bodyMedium" style={{ fontWeight: 'bold' }}>{item.moodType}: </Text>
+                                                        <Text variant="bodyMedium">{item.description} {formattedDate} </Text>
+                                                    </View>))
+                                            }}
 
                                             ListEmptyComponent={<Text variant="bodyMedium">Ei merkintöjä</Text>}
 
@@ -106,7 +111,7 @@ export default function ShowMoods({ route, navigation }) {
                 </Card>
 
             </SafeAreaView >
-        </PaperProvider>
+        </PaperProvider >
     );
 }
 
