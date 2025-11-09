@@ -1,10 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MoodTracker from './MoodTracker';
-import ShowMoods from './ShowMoods';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PaperProvider } from 'react-native-paper';
 import { registerTranslation } from 'react-native-paper-dates'; //Dates fi
+
+import MoodTracker from './MoodTracker';
+import ShowMoods from './ShowMoods';
+
 
 import { SQLiteProvider } from 'expo-sqlite';
 
