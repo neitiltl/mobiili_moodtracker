@@ -7,7 +7,6 @@ import { registerTranslation } from 'react-native-paper-dates'; //Dates fi
 import MoodTracker from './MoodTracker';
 import ShowMoods from './ShowMoods';
 
-
 import { SQLiteProvider } from 'expo-sqlite';
 
 const Stack = createNativeStackNavigator();
