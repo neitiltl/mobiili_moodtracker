@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Keyboard, Alert } from 'react-native';
+import { StyleSheet, View, FlatList, Keyboard } from 'react-native';
 import { Button, Text, Card, Modal, Portal, Divider, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DatePickerModal } from 'react-native-paper-dates';
@@ -24,18 +24,17 @@ function MoodList({ data }) {
                             <Text variant="titleSmall" style={{ fontWeight: 'bold' }}>
                                 {item.moodType}
                             </Text>
-                            <Text variant="bodySmall" style={styles.dateText}>{item.inputDate ? new Date(item.inputDate).toLocaleDateString('fi-FI') : ""} </Text>
-                            {/* jos item.inputDate olmessa, muutetaan FI-muotoon, muuten "" */}
+                            <Text variant="bodySmall" style={styles.dateText}>{new Date(item.inputDate).toLocaleDateString('fi-FI')} </Text>
                         </View>
 
                         <Divider style={{ height: 2, marginVertical: 2 }} />
 
                         <Text variant="bodyMedium" style={styles.descriptionText} >{item.description}</Text>
-                        <Text variant="bodySmall">#{item.id}</Text>  {/* helpottaa järjestyksen hahmottamista */}
+                        <Text variant="bodySmall">#{item.id}</Text>
                     </Card.Content>
                 </Card>)}
 
-            ListEmptyComponent={<Text variant="bodyLarge" style={styles.textCenter}>Ei merkintöjä</Text>}
+            ListEmptyComponent={<Text variant="bodyLarge" style={styles.textCenter} >Ei merkintöjä</Text>}
         />
     )
 }
@@ -44,7 +43,7 @@ export default function ShowMoods({ navigation }) {
 
     const db = useSQLiteContext();
 
-    const [moods, setMoods] = useState([]);
+    const [moods, setMoods] = useState([]); // 
 
     const [dateRangeResults, setDateRangeResults] = useState([]); //päiväyshaku
     const [searchWord, setSearchWord] = useState(""); //sanahaku
@@ -108,18 +107,18 @@ export default function ShowMoods({ navigation }) {
     const [modalContent, setModalContent] = useState(null);
     const [visible, setVisible] = useState(false); //modal
 
-    /*    const showModal = (content) => {
-           setModalContent(content);
-           setVisible(true)
-       };
-    */
+    const showModal = (content) => {
+        setModalContent(content);
+        setVisible(true)
+    };
+
     const hideModal = () => {
         setModalContent(null);
         setVisible(false)
     };
 
     const containerStyle = { margin: 20 }; // modalin tausta
-    /* const containerStyle = { backgroundColor: "#f8f8f8", padding: 3, margin: 15 }; */
+    /* const containerStyle = { backgroundColor: 'white', padding: 3, margin: 15 }; */
 
     const allMoods = moods;
     const lastTen = moods.slice(-10).reverse(); //näyttää viimeiset 10 merkintää
@@ -130,8 +129,8 @@ export default function ShowMoods({ navigation }) {
 
 
     /* https://web-ridge.github.io/react-native-paper-dates/docs/date-picker/range-date-picker */
-    const [range, setRange] = useState({ startDate: undefined, endDate: undefined });
-    const [open, setOpen] = useState(false);
+    const [range, setRange] = React.useState({ startDate: undefined, endDate: undefined });
+    const [open, setOpen] = React.useState(false);
 
     const onDismiss = React.useCallback(() => {
         setOpen(false);
@@ -156,6 +155,8 @@ export default function ShowMoods({ navigation }) {
     );
 
 
+
+
     return (
 
         <SafeAreaView style={styles.container}>
@@ -164,21 +165,21 @@ export default function ShowMoods({ navigation }) {
                 <Card.Content>
 
                     <View style={styles.buttonRow}>
-                        <Button style={styles.button} mode="contained-tonal" buttonColor='red' textColor="#f8f8f8" onPress={() => {
+                        <Button style={styles.button} mode="contained-tonal" buttonColor='red' textColor='white' onPress={() => {
                             setModalContent("ylivireys");
                             setVisible(true);
                         }}>
                             Ylivireys
                         </Button>
 
-                        <Button style={styles.button} mode="contained-tonal" buttonColor='green' textColor="#f8f8f8" onPress={() => {
+                        <Button style={styles.button} mode="contained-tonal" buttonColor='green' textColor='white' onPress={() => {
                             setModalContent("optimi");
                             setVisible(true);
                         }}>
                             Optimi
                         </Button>
 
-                        <Button style={styles.button} mode="contained-tonal" buttonColor='blue' textColor="#f8f8f8" onPress={() => {
+                        <Button style={styles.button} mode="contained-tonal" buttonColor='blue' textColor='white' onPress={() => {
                             setModalContent("alivireys");
                             setVisible(true);
                         }}>
@@ -207,6 +208,8 @@ export default function ShowMoods({ navigation }) {
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                     <Card style={styles.card}>
+
+                        {/* sisällön näyttäminen MoodListilla modaalissa tehty ChatGPT:n avustamana tehty  */}
 
                         <Card.Content style={{ maxHeight: '90%' }}>
                             {modalContent === "ylivireys" && (
@@ -250,7 +253,7 @@ export default function ShowMoods({ navigation }) {
 
                     <TextInput style={styles.textInput}
                         mode="outlined"
-                        label="Hakusana kuvaustekstistä"
+                        label="Sanahaku kuvaustekstistä"
                         value={searchWord}
                         onChangeText={setSearchWord} />
 
@@ -262,7 +265,7 @@ export default function ShowMoods({ navigation }) {
                             setModalContent("searchResults");
                             setVisible(true);
                             setSearchWord(""); //tyhjennä input
-                            Keyboard.dismiss(); // poista kursori inputista
+                            Keyboard.dismiss(); //poistaa kursorin inputista
                         }}>
                         Tee haku
                     </Button>
@@ -288,6 +291,7 @@ export default function ShowMoods({ navigation }) {
                             startYear={2020}
                             endYear={2030}
 
+                            style={styles.dateInput}
                         />
                     </View>
 
@@ -298,10 +302,6 @@ export default function ShowMoods({ navigation }) {
     );
 }
 
-/* esimerkkejä datepicker asetuksista 
-https://stackoverflow.com/questions/78925061/react-native-paper-dates-datepickerinput-modal-customization 
-https://medium.com/@dexiouz/step-by-step-guide-on-how-to-change-background-and-text-color-of-android-date-time-picker-in-react-fbf1a7dea17e
-*/
 
 const styles = StyleSheet.create({
     container: {
@@ -310,10 +310,9 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     card: {
-        marginBottom: 20,
+        marginBottom: 10,
         borderRadius: 10,
         elevation: 4,
-        backgroundColor: "#faf0e6",
     },
     button: {
         marginBottom: 10,
@@ -325,7 +324,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     textInput: {
-        marginBottom: 10,
+        marginBottom: 20,
     },
     buttonRow: {
         flexDirection: 'row',
@@ -338,14 +337,15 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     dateInput: {
-        backgroundColor: "#f8f8f8",
+        backgroundColor: 'white',
     },
+
 
     itemCard: {
         marginVertical: 6,
         borderRadius: 12,
         elevation: 2,
-        backgroundColor: "#f8f8f8",
+        backgroundColor: 'white',
     },
 
     row: {
@@ -367,4 +367,6 @@ const styles = StyleSheet.create({
         marginTop: 4,
         lineHeight: 20,
     },
+
+
 });

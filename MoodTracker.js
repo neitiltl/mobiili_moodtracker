@@ -164,7 +164,7 @@ export default function MoodTracker({ navigation }) {
                         <Text variant="titleMedium">Optimi</Text>
                         <Text variant="titleMedium">Alivireys</Text>
                     </View>
- */}
+                    */}
 
                     {/* https://web-ridge.github.io/react-native-paper-dates/docs/date-picker/input-date-picker */}
                     <View style={styles.datePicker}>
