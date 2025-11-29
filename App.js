@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PaperProvider } from 'react-native-paper';
 import { registerTranslation } from 'react-native-paper-dates'; //Dates fi
+import { Alert } from 'react-native';
 
 import MoodTracker from './MoodTracker';
 import ShowMoods from './ShowMoods';
@@ -45,6 +46,7 @@ export default function App() {
 
     } catch (error) {
       console.error('Could not open database', error);
+      Alert.alert("Tietokannan avaaminen epäonnistui");
     }
   }
 

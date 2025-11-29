@@ -7,9 +7,8 @@ import * as Haptics from 'expo-haptics'; /* https://docs.expo.dev/versions/lates
 
 import { useSQLiteContext } from 'expo-sqlite'; /* https://docs.expo.dev/versions/latest/sdk/sqlite/ */
 
-import Affirmation from "./Affirmation";
 
-export default function MoodTracker({ navigation }) {
+export default function ShowMoodType({ navigation }) {
 
     const [visible, setVisible] = useState(false); //Modal flatlistille
     const showModal = () => setVisible(true);
@@ -44,7 +43,7 @@ export default function MoodTracker({ navigation }) {
             Alert.alert("Valitse vireystila.");
             return;
         }
-        if (!inputDate || !(inputDate instanceof Date) || Number.isNaN(inputDate)) { //päivämäärää ei valittu, ei ole Date, ei ole numero
+        if (!inputDate) { // Päivämäärää ei ole valittu
             Alert.alert("Tallenna päiväys kalenterissa.");
             return;
         }
@@ -63,7 +62,7 @@ export default function MoodTracker({ navigation }) {
 
             setDescription(""); //tyhjentää kentän
             setMoodType(""); //tyhjentää button-valinnan
-            setInputDate(undefined); //input-kenttä tyhjä 
+            setInputDate(new Date()); //palauttaa käyttöpäivään 
             Alert.alert("Merkintä tallennettu");
         } catch (error) {
             console.error('Could not add item', error);
@@ -250,16 +249,8 @@ export default function MoodTracker({ navigation }) {
             </Card>
 
 
-            <Card style={styles.card}>
-                <Card.Content>
-                    <Button mode="contained-tonal" onPress={() => navigation.navigate('ShowMoods')}    >
-                        Kaikki merkinnät
-                    </Button>
-                </Card.Content>
-            </Card>
-
-            <Affirmation />
-            {/* https://www.affirmations.dev/ */}
+           
+           
 
         </SafeAreaView >
     );
